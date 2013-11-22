@@ -1,169 +1,124 @@
-call pathogen#infect('~/.vim/bundle')
-syntax on
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+" My Bundles
+Bundle 'tpope/vim-sensible'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-rake'
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/nerdtree'
+Bundle 'kien/ctrlp.vim'
+Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'rking/ag.vim'
+Bundle 'kana/vim-textobj-user'
+Bundle 'nelstrom/vim-textobj-rubyblock'
+Bundle 'slim-template/vim-slim'
+
 filetype plugin indent on
 
-set wildignore+=rails_admin/**
-set clipboard=unnamed   " allows clipboard to work between vims in different terminals
-set backspace=indent,eol,start
+let mapleader="\\"
 
-" Maps Alt-[h,j,k,l] to resizing a window split
-map <silent> <C-h> <C-w><
-map <silent> <C-j> <C-W>-
-map <silent> <C-k> <C-W>+
-map <silent> <C-l> <C-w>>
+" rainbow_paranthesis
+au VimEnter * RainbowParenthesesActivate
+au VimEnter * RainbowParenthesesLoadRound
+au VimEnter * RainbowParenthesesLoadSquare
+au VimEnter,Syntax,BufRead * RainbowParenthesesLoadBraces
 
-" :map <C-D> :w<CR>:!ruby test/unit/models/vendor_importer_unit_test.rb<CR>
-" strip whitespaces at end of line
-autocmd BufWritePre *.rb :%s/\s\+$//e
-autocmd BufWritePre *.erb :%s/\s\+$//e
-autocmd BufWritePre *.haml :%s/\s\+$//e
-autocmd BufWritePre *.feature :%s/\s\+$//e
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+color ir_black
 
-set background=dark
-set showcmd  " Show count of selected characters
-" colorscheme solarized
-
-
-set hidden
-set directory=/tmp
-set backupdir=/tmp
-set tabstop=2
-set shiftwidth=2
+set cursorline
 set expandtab
-set autoindent
-set nu
-set ls=2
-colorscheme ir_black
+set modelines=0
+set shiftwidth=2
+set clipboard=unnamed
+set synmaxcol=128
+set ttyscroll=10
+set encoding=utf-8
+set tabstop=2
+set nowrap
+set number
+set expandtab
+set nowritebackup
+set noswapfile
+set nobackup
+set hlsearch
+set ignorecase
+set smartcase
 
-nnoremap <silent> <F8> :TlistToggle<CR>
-vmap r "_dP
+" Automatic formatting
+autocmd BufWritePre *.rb :%s/\s\+$//e
+autocmd BufWritePre *.go :%s/\s\+$//e
+autocmd BufWritePre *.haml :%s/\s\+$//e
+autocmd BufWritePre *.html :%s/\s\+$//e
+autocmd BufWritePre *.scss :%s/\s\+$//e
+autocmd BufWritePre *.slim :%s/\s\+$//e
 
-"folding settings
-set foldmethod=indent   "fold based on indent
-set foldnestmax=10      "deepest fold is 10 levels
-set nofoldenable        "dont fold by default
-set foldlevel=1         "this is just what i use
+au BufNewFile * set noeol
+au BufRead,BufNewFile *.go set filetype=go
 
-map <F2> :NERDTreeToggle<CR>
+" No show command
+autocmd VimEnter * set nosc
 
-nnoremap <Leader>T :CommandTFlush <CR>
-nnoremap <Leader>t :CommandT <CR>
-nnoremap <Leader>a :Ack 
+  " Quick ESC
+imap jj <ESC>
 
-" Switch between last two files
-nnoremap ,, <c-^>
-nnoremap ]] <c-w><c-w>
+" Jump to the next row on long lines
+map <Down> gj
+map <Up>   gk
+nnoremap j gj
+nnoremap k gk
 
-" %% Expands to current file folder
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
-map <leader>e :edit %%
-map <leader>v :view %%
+" format the entire file
+nmap <leader>fef ggVG=
 
+" Open new buffers
+nmap <leader>s<left>   :leftabove  vnew<cr>
+nmap <leader>s<right>  :rightbelow vnew<cr>
+nmap <leader>s<up>     :leftabove  new<cr>
+nmap <leader>s<down>   :rightbelow new<cr>
 
-" Map Rails specific views
-map <Leader>v :CommandTFlush<cr>\|:CommandT app/views<cr>
-map <Leader>c :CommandTFlush<cr>\|:CommandT app/controllers<cr>
-map<Leader>gg :topleft :split Gemfile<cr>
-map<Leader>gr :topleft :split config/routes.rb<cr>
+" Tab between buffers
+noremap <tab> <c-w><c-w>
 
+" Switch between last two buffers
+nnoremap <leader><leader> <C-^>
 
-function! ShowRoutes()
-  " Requires 'scratch' plugin
-  :topleft 100 :split __Routes__
-  " Make sure Vim doesn't write __Routes__ as a file
-  :set buftype=nofile
-  " Delete everything
-  :normal 1GdG
-  " Put routes output in buffer
-  :0r! bundle exec rake -s routes
-  " Size window to number of lines (1 plus rake output length)
-  :exec ":normal " . line("$") . _ "
-  " Move cursor to bottom
-  :normal 1GG
-  " Delete empty trailing line
-  :normal dd
-endfunction
-map <leader>gR :call ShowRoutes()<cr> 
-
-
-" F4: copy word under cursror ot buffer
-map <F4> :let @* = expand('<cword>')<cr> 
-" F5: copy filename to buffer
-map <F5> :let @* = expand('%:p')<cr> 
-
-if (&tildeop)
-  nmap gcw guw~l
-  nmap gcW guW~l
-  nmap gciw guiw~l
-  nmap gciW guiW~l
-  nmap gcis guis~l
-  nmap gc$ gu$~l
-  nmap gcgc guu~l
-  nmap gcc guu~l
-  vmap gc gu~l
-else
-  nmap gcw guw~h
-  nmap gcW guW~h
-  nmap gciw guiw~h
-  nmap gciW guiW~h
-  nmap gcis guis~h
-  nmap gc$ gu$~h
-  nmap gcgc guu~h
-  nmap gcc guu~h
-  vmap gc gu~h
+" Resize buffers
+if bufwinnr(1)
+  nmap Ä <C-W><<C-W><
+  nmap Ö <C-W>><C-W>>
+  nmap ö <C-W>-<C-W>-
+  nmap ä <C-W>+<C-W>+
 endif
 
-" This .vimrc file should be placed in your home directory
-" The Terminal app supports (at least) 16 colors
-" So you can have the eight dark colors and the eight light colors
-" the plain colors, using these settings, are the same as the light ones
-" NOTE: You will need to replace ^[ with a raw Escape character, which you
-" can type by typing Ctrl-V and then (after releaseing Ctrl-V) the Escape key.
+" NERDTree
+nmap <leader>n :NERDTreeToggle<CR>
+let NERDTreeHighlightCursorline=1
+let NERDTreeIgnore = ['tmp', '.yardoc', 'pkg']
 
+" Syntastic
+let g:syntastic_mode_map = { 'mode': 'passive' }
+let g:syntastic_ruby_exec = '~/.rvm/rubies/ruby-2.0.0-p0/bin/ruby'
 
-" Everything from here on down is optional
-" These colors are examples of what is possible
-" type :help syntax
-" or :help color within vim for more info
-" and try opening the file
-" share/vim/vim61/syntax/colortest.vim
-" Note: where share is depends on where/how you installed vim
- 
-highlight Comment       ctermfg=DarkGreen
-highlight Constant      ctermfg=DarkMagenta
-highlight Character     ctermfg=DarkRed
-highlight Special       ctermfg=DarkBlue
-highlight Identifier    ctermfg=DarkCyan
-highlight Statement     ctermfg=DarkBlue
-highlight PreProc       ctermfg=DarkBlue
-highlight Type          ctermfg=DarkBlue
-highlight Number        ctermfg=DarkBlue
-highlight Delimiter     ctermfg=DarkBlue
-highlight Error         ctermfg=Black
-highlight Todo          ctermfg=DarkBlue
-highlight WarningMsg    term=NONE           ctermfg=Black ctermbg=NONE   
-highlight ErrorMsg      term=NONE           ctermfg=DarkRed ctermbg=NONE 
+" CtrlP
+nnoremap <silent> t :CtrlP<cr>
+let g:ctrlp_working_path_mode = 2
+let g:ctrlp_by_filename = 1
+let g:ctrlp_max_files = 600
+let g:ctrlp_max_depth = 5
 
-" These settings only affect the X11 GUI version (which is different
-" than the fully Carbonized version at homepage.mac.com/fisherbb/
+" Go programming
+set rtp+=/usr/local/Cellar/go/1.0.3/misc/vim
 
-highlight Comment       guifg=Green                 gui=NONE
-highlight Constant      guifg=Magenta               gui=NONE
-highlight Character     guifg=Red                   gui=NONE
-highlight Special       guifg=Blue                  gui=NONE
-highlight Identifier    guifg=DarkCyan              gui=NONE
-highlight Statement     guifg=DarkGreen             gui=NONE
-highlight PreProc       guifg=Purple                gui=NONE
-highlight Type          guifg=DarkGreen             gui=NONE
-"highlight Normal                   guibg=#E0F2FF   gui=NONE
-highlight Number        guifg=Blue                  gui=NONE
-"highlight Cursor       guifg=NONE  guibg=Green
-"highlight Cursor       guifg=bg    guibg=fg
-highlight Delimiter     guifg=blue                  gui=NONE
-"highlight NonText                  guibg=lightgray gui=NONE
-"highlight Error        guifg=White guibg=Red       gui=NONE
-highlight Error         guifg=NONE  guibg=NONE      gui=NONE
-highlight Todo          guifg=Blue  guibg=Yellow    gui=NONE
-
-"#### end color settings #############  
+" Quit with :Q
+" command -nargs=0 Quit :qa!
