@@ -32,6 +32,7 @@ Bundle 'mileszs/ack.vim'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
 Bundle 'tsaleh/vim-matchit'
+Bundle 'Valloric/YouCompleteMe'
 
 let g:neosnippet#snippets_directory='~/.vim/snippets'
 
@@ -69,6 +70,9 @@ set nobackup
 set hlsearch
 set ignorecase
 set smartcase
+
+" Toggle search highlight
+nnoremap <F3> :set hlsearch!<CR>
 
 " Automatic formatting
 autocmd BufWritePre *.rb :%s/\s\+$//e
@@ -136,3 +140,6 @@ set rtp+=/usr/local/Cellar/go/1.0.3/misc/vim
 
 " Quit with :Q
 " command -nargs=0 Quit :qa!
+
+" %% Expands to current file folder
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
