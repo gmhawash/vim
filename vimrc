@@ -8,7 +8,9 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " My Bundles
-Bundle 'junegunn/vim-easy-align'
+Bundle 'godlygeek/tabular'
+Bundle 'vim-scripts/loremipsum'
+Bundle 'wincent/Command-T'
 Bundle 'tpope/vim-sensible'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-fugitive'
@@ -31,8 +33,13 @@ Bundle 'slim-template/vim-slim'
 Bundle 'mileszs/ack.vim'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
-Bundle 'tsaleh/vim-matchit'
-Bundle 'Valloric/YouCompleteMe'
+Bundle 'vim-scripts/matchit.zip'
+Bundle 'ervandew/supertab'
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle "garbas/vim-snipmate"
+" Optional:
+Bundle "honza/vim-snippets"
 
 let g:neosnippet#snippets_directory='~/.vim/snippets'
 
@@ -40,7 +47,7 @@ filetype plugin indent on
 
 let mapleader="\\"
 
-let g:session_autosave='no'
+let g:session_autosave='yes'
 let g:session_autoload='yes'
 let g:session_directory='./'
 
@@ -120,7 +127,7 @@ noremap <tab> <c-w><c-w>
 nnoremap <leader><leader> <C-^>
 
 " NERDTree
-map <F2> :NERDTreeToggle<CR>
+map <c-e> :NERDTreeToggle<CR>
 let NERDTreeHighlightCursorline=1
 let NERDTreeIgnore = ['tmp', '.yardoc', 'pkg']
 
@@ -143,3 +150,5 @@ set rtp+=/usr/local/Cellar/go/1.0.3/misc/vim
 
 " %% Expands to current file folder
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
+au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+au BufRead,BufNewFile *.cap set filetype=ruby
