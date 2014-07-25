@@ -1,49 +1,54 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " Let Vundle manage Vundle
 Bundle 'gmarik/vundle'
 
 " My Bundles
-Bundle 'godlygeek/tabular'
-Bundle 'vim-scripts/loremipsum'
-Bundle 'wincent/Command-T'
-Bundle 'tpope/vim-sensible'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-rails'
-Bundle 'tpope/vim-endwise'    
-Bundle 'tpope/vim-cucumber'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'tpope/vim-rake'
-Bundle 'nanotech/jellybeans.vim'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'scrooloose/syntastic'
-Bundle 'scrooloose/nerdtree'
-Bundle 'kien/ctrlp.vim'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'rking/ag.vim'
-Bundle 'kana/vim-textobj-user'
-Bundle 'nelstrom/vim-textobj-rubyblock'
-Bundle 'slim-template/vim-slim'
-Bundle 'mileszs/ack.vim'
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-session'
-Bundle 'vim-scripts/matchit.zip'
-Bundle 'ervandew/supertab'
-Bundle "MarcWeber/vim-addon-mw-utils"
-Bundle "tomtom/tlib_vim"
-Bundle "garbas/vim-snipmate"
-" Optional:
-Bundle "honza/vim-snippets"
+Plugin 'godlygeek/tabular'
+Plugin 'vim-scripts/loremipsum'
+Plugin 'wincent/Command-T'
+" Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'tpope/vim-sensible'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-endwise'    
+Plugin 'tpope/vim-cucumber'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'michaeljsmith/vim-indent-object'
+Plugin 'tpope/vim-rake'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdtree'
+Plugin 'kien/ctrlp.vim'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'rking/ag.vim'
+Plugin 'kana/vim-textobj-user'
+Plugin 'nelstrom/vim-textobj-rubyblock'
+Plugin 'slim-template/vim-slim'
+Plugin 'mileszs/ack.vim'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
+Plugin 'vim-scripts/matchit.zip'
+Plugin 'ervandew/supertab'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+"" Optional:
+Plugin 'honza/vim-snippets'
 
-let g:neosnippet#snippets_directory='~/.vim/snippets'
+call vundle#end()
+
+
 
 filetype plugin indent on
+
+let g:neosnippet#snippets_directory='~/.vim/snippets'
 
 let mapleader="\\"
 
@@ -77,6 +82,10 @@ set nobackup
 set hlsearch
 set ignorecase
 set smartcase
+
+map <Leader>tf :CommandTFlush<CR>
+map <Leader>tm :CommandT db/migrate<CR>
+map <Leader>tv :CommandT db/migrate<CR>
 
 " Toggle search highlight
 nnoremap <F3> :set hlsearch!<CR>
