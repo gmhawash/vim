@@ -25,10 +25,8 @@ Plugin 'Lokaltog/vim-powerline'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'rking/ag.vim'
 Plugin 'kana/vim-textobj-user'
 Plugin 'slim-template/vim-slim'
-Plugin 'mileszs/ack.vim'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
 Plugin 'vim-scripts/matchit.zip'
@@ -39,6 +37,8 @@ Plugin 'tomtom/tlib_vim'
 Plugin 'krisleech/vimfiles'
 Plugin 'gmhawash/vim-rspec'
 Plugin 'oplatek/Conque-Shell'
+Plugin 'dyng/ctrlsf.vim'
+
 " Optional:
 
 call vundle#end()
@@ -50,7 +50,7 @@ let mapleader="\\"
 let g:session_autosave = 'yes'
 let g:session_autoload = 'yes'
 " extract the folder name
-let g:session_default_name=fnamemodify(getcwd(), ':t')
+" let g:session_default_name=fnamemodify(getcwd(), ':t')
 
 " rainbow_paranthesis
 au VimEnter * RainbowParenthesesActivate
@@ -64,6 +64,9 @@ map <Leader>rf :w<CR>:call RunCurrentSpecFile()<CR>
 map <Leader>rs :w<CR>:call RunNearestSpec()<CR>
 map <Leader>rl :w<CR>:call RunLastSpec()<CR>
 map <Leader>ra :w<CR>:call RunAllSpecs()<CR>
+
+" keep history when switching buffers
+:set hidden
 
 color ir_black
 
@@ -88,8 +91,6 @@ set ignorecase
 set smartcase
 
 map <Leader>tf :CommandTFlush<CR>
-map <Leader>tm :CommandT db/migrate<CR>
-map <Leader>tv :CommandT db/migrate<CR>
 
 " Toggle search highlight
 nnoremap <F3> :set hlsearch!<CR>
@@ -116,16 +117,35 @@ map <Down> gj
 map <Up>   gk
 nnoremap j gj
 nnoremap k gk
-nnoremap <Leader>a :Ack 
+
+" Set search to use AG
+let g:ctrlsf_ackprg = 'ag'
+nnoremap <Leader>a :CtrlSF 
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+vmap     <C-F>F <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
 
 " format the entire file
 nmap <leader>fef ggVG=
+
+
+" Move lines up and down
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-K> :m .-2<CR>==
+inoremap <C-J> <Esc>:m .+1<CR>==gi
+inoremap <C-K> <Esc>:m .-2<CR>==gi
+vnoremap <C-J> :m '>+1<CR>gv=gv
+vnoremap <C-K> :m '<-2<CR>gv=gv
 
 " Maps Alt-[h,j,k,l] to resizing a window split
 map <silent> <C-h> 2<C-w><
 map <silent> <C-j> 2<C-W>-
 map <silent> <C-k> 2<C-W>+
 map <silent> <C-l> 2<C-w>>
+
 noremap ff :resize 100 <cr> <bar> :vertical resize 220<cr>
 noremap fm <C-w>=
 
